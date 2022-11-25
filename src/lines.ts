@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { Colours } from '../colours';
 
 export interface Line {
   date: string;
@@ -17,6 +18,10 @@ const RATE_COL_INDEX = 4;
 const TOTAL_COL_INDEX = 5;
 
 export const generateLines = (): { lines: Line[]; invoiceTotal: number } => {
+  if (!fs.existsSync('./data/data.tsv')) {
+    console.log(Colours.Red, 'Please include the "data.tsv" file at /data/data.tsv');
+    return;
+  }
   const file = fs.readFileSync('./data/data.tsv');
   const linesRaw = file.toString().trim().replace(/£/gm, '').split('\r\n');
   let invoiceTotal = 0;
